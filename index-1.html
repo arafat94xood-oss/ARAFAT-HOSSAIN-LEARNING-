@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101827">
+<title>ARAFAT JR LEARNING</title>
+<style>
+*{box-sizing:border-box}
+:root{--bg:#f1f5f9;--ink:#172033;--green:#087e68;--deep:#101827;--mint:#62e6bd;--line:#dce5ec}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,"Noto Sans Bengali",sans-serif;line-height:1.6}
+header{background:linear-gradient(135deg,#101827,#17334a);color:white;padding:25px 15px;text-align:center}
+header h1{margin:0;color:var(--mint);font-size:clamp(25px,5vw,36px)}
+header p{margin:7px 0 12px}
+nav{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;padding:12px;background:#172033;position:sticky;top:0;z-index:2}
+button{border:0;border-radius:8px;padding:11px 14px;background:#0d9475;color:white;font-weight:bold;cursor:pointer}
+button:hover{filter:brightness(.94)}
+nav button{background:#29374c}
+main{max-width:900px;margin:auto;padding:15px}
+.card{background:white;padding:18px;border-radius:13px;margin:13px 0;box-shadow:0 2px 9px #0000000c}
+h2{color:#087e68;margin-top:0}
+h3{margin-bottom:8px}
+input,textarea,select{width:100%;padding:12px;margin:7px 0;border:1px solid #cbd5e1;border-radius:8px;font-size:15px;font-family:inherit}
+textarea{min-height:90px;resize:vertical}
+.item{padding:12px;border:1px solid #ddd;border-radius:9px;margin:8px 0;overflow-wrap:anywhere}
+.hidden{display:none!important}
+footer{text-align:center;padding:25px;color:#64748b}
+.muted{color:#64748b;font-size:14px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.danger{background:#b42318}.secondary{background:#475569}
+.hero{background:linear-gradient(135deg,#e0fff4,#eef6ff);border:1px solid #d5eee5}
+.badge{display:inline-block;background:#e5f8f1;color:#087e68;padding:4px 9px;border-radius:20px;font-size:12px;font-weight:bold}
+.option{display:block;padding:8px;border:1px solid var(--line);border-radius:8px;margin:7px 0;cursor:pointer}
+.option input{width:auto;margin-right:7px}
+#result{font-weight:bold;color:#087e68}
+@media(max-width:560px){nav button{padding:9px 10px;font-size:13px}main{padding:9px}.card{padding:14px}}
+</style>
+</head>
+<body>
+<header>
+<h1>ARAFAT JR LEARNING</h1>
+<p id="tagline">শিখি, এগিয়ে যাই, সফল হই</p>
+<button onclick="changeLang()">বাংলা / English</button>
+</header>
+
+<nav>
+<button onclick="show('home')">Home</button>
+<button onclick="show('study')">Study</button>
+<button onclick="show('exam')">Exam</button>
+<button onclick="show('chat')">আড্ডা</button>
+<button onclick="show('members')">Members</button>
+<button onclick="show('admin')">Admin</button>
+</nav>
+
+<main>
+<section id="home" class="page">
+ <div class="card hero">
+  <span class="badge">স্বাগতম</span>
+  <h2>ARAFAT JR LEARNING</h2>
+  <h3>শেখার আনন্দ, সাফল্যের পথে</h3>
+  <p>এখানে তুমি পাবে পড়াশোনা, নোট, পরীক্ষা এবং শেখার সুন্দর পরিবেশ। HSC ও অন্যান্য শ্রেণির শিক্ষার্থীদের জন্য শেখা ও অনুশীলনের একটি প্ল্যাটফর্ম।</p>
+  <div class="actions"><button onclick="show('study')">📚 পড়াশোনা শুরু</button><button onclick="show('exam')">📝 পরীক্ষা দাও</button></div>
+ </div>
+ <div class="card">
+  <h2>আমাদের সুবিধা</h2>
+  <p>📚 সকল বিষয়ের পড়াশোনা</p><p>📝 Admin-এর তৈরি অনলাইন পরীক্ষা</p><p>📄 নোট ও PDF লিংক</p><p>💬 আড্ডা ও আলোচনা</p><p>👨‍🎓 শিক্ষার্থী সদস্য তালিকা</p><p>🔐 Admin Dashboard</p>
+ </div>
+ <div class="card"><h2>📢 নোটিশ</h2><p id="homeNotice">নতুন নোটিশের জন্য এখানে চোখ রাখো।</p></div>
+</section>
+
+<section id="study" class="page hidden">
+ <div class="card"><h2>📚 Study Materials</h2><p class="muted">বিষয় বেছে নিয়ে Admin-এর প্রকাশ করা নোট পড়ো।</p>
+ <select id="subject" onchange="renderNotes()">
+ <option value="">সব বিষয়</option><option>বাংলা</option><option>English</option><option>ICT</option><option>Physics</option><option>Chemistry</option><option>Biology</option><option>Higher Mathematics</option><option>Accounting</option><option>Finance</option><option>Business Organization</option><option>Economics</option><option>History</option><option>Geography</option><option>অন্যান্য</option>
+ </select><div id="notes"></div></div>
+</section>
+
+<section id="exam" class="page hidden">
+ <div class="card"><h2>📝 Online Exam</h2><p class="muted">Admin-এর তৈরি করা প্রশ্নের উত্তর দাও।</p><div id="questions"></div><button onclick="submitExam()">পরীক্ষা জমা দাও</button><div id="result"></div></div>
+</section>
+
+<section id="chat" class="page hidden">
+ <div class="card"><h2>💬 আড্ডা ঘর</h2><p class="muted">শিক্ষামূলক আলোচনা করো এবং সবার সঙ্গে ভদ্র আচরণ করো।</p>
+ <div id="messages"></div><input id="chatName" placeholder="তোমার নাম"><textarea id="chatText" placeholder="তোমার মেসেজ লেখো"></textarea><button onclick="sendMessage()">Send</button></div>
+</section>
+
+<section id="members" class="page hidden">
+ <div class="card"><h2>👨‍🎓 Members</h2><div id="memberList"></div></div>
+</section>
+
+<section id="admin" class="page hidden">
+ <div class="card"><h2>🔐 Admin Login</h2>
+ <div id="loginBox"><p class="muted">ডেমো পাসওয়ার্ড: <b>1234</b> (প্রকাশের আগে অবশ্যই বদলাতে হবে)</p><input type="password" id="password" placeholder="Admin Password"><button onclick="login()">Login</button></div>
+ <div id="adminPanel" class="hidden">
+  <h2>Admin Dashboard</h2>
+  <h3>➕ নতুন শিক্ষার্থী যোগ করো</h3><input id="personName" placeholder="শিক্ষার্থীর নাম"><input id="personClass" placeholder="শ্রেণি (HSC / Class 10)"><input id="personId" placeholder="Student ID"><button onclick="addMember()">Add Member</button>
+  <h3>📚 নতুন নোট যোগ করো</h3><input id="noteTitle" placeholder="নোটের নাম">
+  <select id="noteSubject"><option>বাংলা</option><option>English</option><option>ICT</option><option>Physics</option><option>Chemistry</option><option>Biology</option><option>Higher Mathematics</option><option>অন্যান্য</option></select>
+  <textarea id="noteContent" placeholder="নোটের লেখা অথবা PDF-এর লিংক"></textarea><button onclick="addNote()">Publish Note</button>
+  <h3>📝 নতুন MCQ প্রশ্ন যোগ করো</h3><input id="questionText" placeholder="প্রশ্ন লেখো"><input id="optionA" placeholder="Option A"><input id="optionB" placeholder="Option B"><input id="optionC" placeholder="Option C"><input id="optionD" placeholder="Option D">
+  <select id="correct"><option value="0">সঠিক উত্তর A</option><option value="1">সঠিক উত্তর B</option><option value="2">সঠিক উত্তর C</option><option value="3">সঠিক উত্তর D</option></select><button onclick="addQuestion()">Add Question</button>
+  <h3>📢 হোমপেজের নোটিশ বদলাও</h3><textarea id="noticeText" placeholder="নতুন নোটিশ লিখো"></textarea><button onclick="updateNotice()">নোটিশ প্রকাশ</button>
+  <h3>⚙️ Admin Tools</h3><div class="actions"><button class="secondary" onclick="logout()">Logout</button><button class="danger" onclick="clearData()">সব ডেটা মুছুন</button></div>
+ </div></div>
+</section>
+</main>
+<footer><p>© 2026 <b>ARAFAT JR LEARNING</b></p><p>Learn Today, Lead Tomorrow.</p></footer>
+
+<script>
+const getData=key=>{try{return JSON.parse(localStorage.getItem(key)||"[]")}catch(e){return []}};
+const saveData=(key,data)=>localStorage.setItem(key,JSON.stringify(data));
+const $=id=>document.getElementById(id);
+function show(id){document.querySelectorAll('.page').forEach(p=>p.classList.add('hidden'));$(id).classList.remove('hidden');if(id==='study')renderNotes();if(id==='members')renderMembers();if(id==='exam')renderQuestions();if(id==='chat')renderMessages();}
+function login(){if($('password').value==='1234'){$('loginBox').classList.add('hidden');$('adminPanel').classList.remove('hidden')}else alert('ভুল Password!')}
+function logout(){$('adminPanel').classList.add('hidden');$('loginBox').classList.remove('hidden');$('password').value=''}
+function addMember(){let name=$('personName').value.trim(),cls=$('personClass').value.trim(),id=$('personId').value.trim();if(!name||!cls||!id)return alert('সব তথ্য দাও');let d=getData('members');d.push({name,cls,id});saveData('members',d);$('personName').value=$('personClass').value=$('personId').value='';alert('শিক্ষার্থী যোগ হয়েছে!');renderMembers()}
+function renderMembers(){$('memberList').innerHTML=getData('members').map(m=>`<div class="item">👨‍🎓 ${safe(m.name)}<br>Class: ${safe(m.cls)}<br>ID: ${safe(m.id)}</div>`).join('')||'এখনো কোনো সদস্য যোগ করা হয়নি।'}
+function addNote(){let title=$('noteTitle').value.trim(),content=$('noteContent').value.trim();if(!title||!content)return alert('নোটের নাম ও লেখা দাও');let d=getData('notes');d.push({title,content,subject:$('noteSubject').value});saveData('notes',d);$('noteTitle').value=$('noteContent').value='';alert('নোট প্রকাশ হয়েছে!');renderNotes()}
+function renderNotes(){let subject=$('subject')?.value||'';let d=getData('notes').filter(n=>!subject||n.subject===subject);$('notes').innerHTML=d.map(n=>{let url=n.content.match(/^https?:\/\/\S+$/);return `<div class="item"><h3>${safe(n.title)}</h3><b>${safe(n.subject)}</b><p>${safe(n.content)}</p>${url?`<a href="${safe(url[0])}" target="_blank" rel="noopener">PDF / লিংক খুলুন</a>`:''}</div>`}).join('')||'কোনো নোট নেই।'}
+function addQuestion(){let q=$('questionText').value.trim(),opts=[$('optionA').value,$('optionB').value,$('optionC').value,$('optionD').value];if(!q||opts.some(x=>!x.trim()))return alert('প্রশ্ন ও চারটি উত্তর দাও');let d=getData('questions');d.push({q,opts,correct:Number($('correct').value)});saveData('questions',d);$('questionText').value=$('optionA').value=$('optionB').value=$('optionC').value=$('optionD').value='';alert('প্রশ্ন যোগ হয়েছে!')}
+function renderQuestions(){let d=getData('questions');$('questions').innerHTML=d.map((q,i)=>`<div class="item"><b>${i+1}. ${safe(q.q)}</b>${q.opts.map((o,j)=>`<label class="option"><input type="radio" name="q${i}" value="${j}"> ${safe(o)}</label>`).join('')}</div>`).join('')||'এখনো কোনো প্রশ্ন যোগ করা হয়নি।';$('result').textContent=''}
+function submitExam(){let d=getData('questions'),score=0;if(!d.length)return alert('প্রথমে Admin-কে প্রশ্ন যোগ করতে হবে');d.forEach((q,i)=>{let s=document.querySelector(`input[name="q${i}"]:checked`);if(s&&Number(s.value)===q.correct)score++});$('result').textContent=`তোমার ফলাফল: ${score}/${d.length}`}
+function sendMessage(){let name=$('chatName').value.trim(),msg=$('chatText').value.trim();if(!name||!msg)return alert('নাম ও মেসেজ লেখো');let d=getData('messages');d.push({name,msg});saveData('messages',d);$('chatText').value='';renderMessages()}
+function renderMessages(){$('messages').innerHTML=getData('messages').map(m=>`<div class="item"><b>${safe(m.name)}</b><p>${safe(m.msg)}</p></div>`).join('')||'আড্ডা শুরু করো!'}
+function safe(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function clearData(){if(confirm('সব ডেটা মুছে ফেলতে চাও?')){['members','notes','questions','messages','notice'].forEach(k=>localStorage.removeItem(k));renderMembers();renderNotes();renderMessages();renderQuestions();$('homeNotice').textContent='নতুন নোটিশের জন্য এখানে চোখ রাখো।';alert('ডেটা মুছে গেছে')}}
+function updateNotice(){let n=$('noticeText').value.trim();if(!n)return alert('নোটিশ লেখো');localStorage.setItem('notice',n);$('homeNotice').textContent=n;$('noticeText').value='';alert('নোটিশ প্রকাশ হয়েছে!')}
+let english=false;function changeLang(){english=!english;$('tagline').innerText=english?'Learn, Grow and Succeed':'শিখি, এগিয়ে যাই, সফল হই'}
+$('homeNotice').textContent=localStorage.getItem('notice')||'নতুন নোটিশের জন্য এখানে চোখ রাখো।';
+renderNotes();renderMembers();
+</script>
+</body>
+</html>
